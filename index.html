@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>вКЛЮЧайся — благоустройство Смоленской области</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e12; --bg2:#10141b; --card:#141a23;
+    --accent:#38bdf8; --accent-glow:rgba(56,189,248,.35);
+    --terra:#c96f4a; --brass:#d9a441;
+    --text:#e8edf4; --muted:#8b95a3; --line:#232b36;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;overflow-x:hidden}
+  h1,h2,h3,.font-un{font-family:'Unbounded',sans-serif}
+  ::selection{background:var(--accent);color:#04222e}
+
+  /* ===== шапка ===== */
+  header{position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(11,14,18,.82);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line)}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+  .logo svg{width:34px;height:34px}
+  .logo b{font-family:'Unbounded';font-weight:800;font-size:18px;letter-spacing:.5px}
+  .logo b .k{color:var(--accent)}
+  .nav-links{display:flex;gap:28px}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--accent)}
+  @media(max-width:760px){.nav-links{display:none}}
+
+  /* ===== герой ===== */
+  .hero{min-height:100vh;display:flex;align-items:center;position:relative;
+    padding:120px 0 80px;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(60% 55% at 75% 40%,var(--accent-glow),transparent 70%),
+               radial-gradient(45% 45% at 15% 80%,rgba(201,111,74,.14),transparent 70%)}
+  .wall-bg{position:absolute;bottom:-6px;left:0;right:0;height:180px;opacity:.16;pointer-events:none}
+  .hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;position:relative}
+  @media(max-width:860px){.hero .wrap{grid-template-columns:1fr}}
+  .tag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);
+    border-radius:999px;padding:6px 14px;font-size:12px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--muted);margin-bottom:28px}
+  .tag i{width:7px;height:7px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .hero h1{font-size:clamp(40px,6.5vw,76px);font-weight:800;line-height:1.04;letter-spacing:-.5px}
+  .hero h1 .k{color:var(--accent);text-shadow:0 0 34px var(--accent-glow)}
+  .hero p.sub{color:var(--muted);font-size:18px;line-height:1.65;margin-top:24px;max-width:520px}
+  .hero-cta{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:12px;
+    font-family:'Unbounded';font-size:14px;font-weight:600;text-decoration:none;
+    transition:transform .2s,box-shadow .2s;cursor:pointer;border:none}
+  .btn-main{background:var(--accent);color:#04222e;box-shadow:0 8px 32px var(--accent-glow)}
+  .btn-main:hover{transform:translateY(-2px);box-shadow:0 14px 40px var(--accent-glow)}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* эмблема ключа */
+  .key-stage{display:flex;justify-content:center}
+  .key-emblem{width:min(320px,70vw);filter:drop-shadow(0 0 40px var(--accent-glow));animation:float 6s ease-in-out infinite}
+  @keyframes float{50%{transform:translateY(-14px)}}
+
+  /* счётчики */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:90px}
+  @media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--bg2)}
+  .stat .num{font-family:'Unbounded';font-size:clamp(26px,3vw,38px);font-weight:800;color:var(--accent)}
+  .stat .lbl{color:var(--muted);font-size:13px;margin-top:8px;line-height:1.4}
+
+  /* бегущая строка */
+  .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:16px 0;overflow:hidden;background:var(--bg2);white-space:nowrap}
+  .marquee-in{display:inline-block;animation:slide 40s linear infinite;
+    font-family:'Unbounded';font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+  .marquee-in b{color:var(--brass);font-weight:600}
+  .marquee-in span{margin:0 28px}
+  @keyframes slide{to{transform:translateX(-50%)}}
+
+  /* секции */
+  section{padding:90px 0}
+  .sec-head{margin-bottom:44px}
+  .sec-kicker{color:var(--accent);font-size:12px;letter-spacing:3px;text-transform:uppercase;
+    font-weight:700;margin-bottom:14px}
+  .sec-head h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.5px}
+  .sec-head p{color:var(--muted);margin-top:14px;max-width:640px;line-height:1.6}
+
+  /* карта */
+  .map-box{border:1px solid var(--line);border-radius:20px;background:var(--bg2);
+    padding:28px;position:relative}
+  .map-box svg{width:100%;height:auto;display:block}
+  .pin{cursor:pointer}
+  .pin circle.dot{transition:transform .2s}
+  .pin:hover circle.dot{transform:scale(1.6)}
+  .pin text{fill:var(--muted);font-size:10px;font-family:'Manrope'}
+  .pin:hover text{fill:var(--text)}
+  .map-legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;font-size:13px;color:var(--muted)}
+  .map-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+
+  /* фильтры */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
+  .chip{padding:10px 20px;border-radius:999px;border:1px solid var(--line);background:none;
+    color:var(--muted);font-family:'Manrope';font-size:14px;font-weight:500;cursor:pointer;transition:.2s}
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#04222e;font-weight:700}
+
+  /* карточки */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;
+    display:flex;flex-direction:column;gap:14px;transition:transform .25s,border-color .25s}
+  .card:hover{transform:translateY(-4px);border-color:rgba(56,189,248,.5)}
+  .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .badge{font-size:11px;padding:5px 12px;border-radius:999px;font-weight:700;letter-spacing:.5px;white-space:nowrap}
+  .b-done{background:rgba(74,222,128,.12);color:#4ade80}
+  .b-proc{background:rgba(56,189,248,.12);color:var(--accent)}
+  .b-vote{background:rgba(217,164,65,.14);color:var(--brass)}
+  .card h3{font-size:17px;font-weight:600;line-height:1.35}
+  .card .city{color:var(--terra);font-size:13px;font-weight:700;letter-spacing:.5px}
+  .card .desc{color:var(--muted);font-size:14px;line-height:1.55;flex:1}
+  .prog{height:5px;border-radius:99px;background:#1d2530;overflow:hidden}
+  .prog i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--terra),var(--accent))}
+  .prog-lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+
+  /* хроника */
+  .timeline{position:relative;padding-left:34px}
+  .timeline::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(var(--accent),var(--terra))}
+  .tl-item{position:relative;padding:0 0 34px}
+  .tl-item::before{content:"";position:absolute;left:-33px;top:5px;width:14px;height:14px;
+    border-radius:50%;background:var(--bg);border:3px solid var(--accent)}
+  .tl-item .yr{font-family:'Unbounded';color:var(--brass);font-size:14px;font-weight:600}
+  .tl-item h4{font-size:17px;margin:6px 0 6px;font-weight:600}
+  .tl-item p{color:var(--muted);font-size:14px;line-height:1.55;max-width:620px}
+
+  /* 4 способа */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  @media(max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
+  .step{border:1px solid var(--line);border-radius:18px;padding:28px;background:var(--bg2);position:relative;transition:border-color .2s}
+  .step:hover{border-color:var(--accent)}
+  .step .n{font-family:'Unbounded';font-size:40px;font-weight:800;color:transparent;
+    -webkit-text-stroke:1.5px var(--accent)}
+  .step h3{font-size:17px;margin:16px 0 10px}
+  .step p{color:var(--muted);font-size:14px;line-height:1.55}
+
+  /* финал */
+  .final{border-radius:24px;border:1px solid var(--line);
+    background:linear-gradient(135deg,rgba(201,111,74,.16),rgba(56,189,248,.1));
+    padding:64px 40px;text-align:center}
+  .final h2{font-size:clamp(28px,4.5vw,48px);font-weight:800}
+  .final h2 .k{color:var(--accent)}
+  .final p{color:var(--muted);margin:20px auto 34px;max-width:520px;line-height:1.6}
+
+  footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-size:13px;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="12" r="8" stroke="#38bdf8" stroke-width="2.4"/>
+        <path d="M20 20v14M20 34h7M20 30h5" stroke="#d9a441" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <b>в<span class="k">КЛЮЧайся</span></b>
+    </a>
+    <nav class="nav-links">
+      <a href="#catalog">Каталог</a>
+      <a href="#map">Карта</a>
+      <a href="#history">Хроника</a>
+      <a href="#join">Включиться</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ГЕРОЙ -->
+<div class="hero" id="top">
+  <svg class="wall-bg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <path d="M0 120V70h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30v-18h20v18h30V120Z" fill="#38bdf8"/>
+  </svg>
+  <div class="wrap">
+    <div>
+      <div class="tag"><i></i>Смоленская область · 863</div>
+      <h1>Город делают <span class="k">не стены</span>. Город делают <span class="k">люди</span>.</h1>
+      <p class="sub">«вКЛЮЧайся» — портал о благоустройстве общественных пространств Смоленщины. Каждый проект здесь начался с голоса горожан — и ты можешь стать следующим, кто решит, каким будет твой город.</p>
+      <div class="hero-cta">
+        <a class="btn btn-main" href="#catalog">Смотреть проекты</a>
+        <a class="btn btn-ghost" href="#join">Как включиться</a>
+      </div>
+    </div>
+    <div class="key-stage">
+      <svg class="key-emblem" viewBox="0 0 300 300" fill="none">
+        <circle cx="150" cy="150" r="128" stroke="#38bdf8" stroke-width="2" opacity=".9" stroke-dasharray="8 10"/>
+        <circle cx="150" cy="150" r="96" stroke="#38bdf8" stroke-width="3"/>
+        <circle cx="150" cy="150" r="96" stroke="#d9a441" stroke-width="1.4" opacity=".8" stroke-dasharray="3 6"/>
+        <path d="M150 96l34 22v66h-68v-66l34-22Z" stroke="#e8edf4" stroke-width="3" fill="rgba(56,189,248,.06)"/>
+        <path d="M150 96v-14" stroke="#d9a441" stroke-width="3" stroke-linecap="round"/>
+        <path d="M116 184v50h14v-12h10v10h8v-10h10v12h14v-50" stroke="#e8edf4" stroke-width="3" fill="none"/>
+        <circle cx="150" cy="134" r="9" stroke="#d9a441" stroke-width="2.6"/>
+        <text x="150" y="262" text-anchor="middle" fill="#8b95a3" font-size="11" font-family="Manrope" letter-spacing="4">SMOL·KEY·863</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><div class="num">112</div><div class="lbl">пространств на карте области</div></div>
+    <div class="stat"><div class="num">35</div><div class="lbl">объектов благоустроено за 2025 год</div></div>
+    <div class="stat"><div class="num">22</div><div class="lbl">победы во всероссийском конкурсе Минстроя</div></div>
+    <div class="stat"><div class="num">1,5 млрд ₽</div><div class="lbl">привлечено федеральных средств</div></div>
+  </div>
+</div>
+
+<div class="marquee"><div class="marquee-in" id="marq"></div></div>
+
+<!-- КАТАЛОГ -->
+<section id="catalog">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">Каталог</div>
+      <h2>Живая карта перемен</h2>
+      <p>Реальные проекты благоустройства Смоленской области. Фильтруй по статусу — и находи то, что происходит рядом с тобой прямо сейчас.</p>
+    </div>
+    <div class="filters" id="filters">
+      <button class="chip on" data-f="all">Все</button>
+      <button class="chip" data-f="done">Реализовано</button>
+      <button class="chip" data-f="proc">Стройка идёт</button>
+      <button class="chip" data-f="vote">На голосовании</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- КАРТА -->
+<section id="map" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">География</div>
+      <h2>Область в пинах</h2>
+      <p>Наведи курсор на точку — увидишь город и ключевой проект.</p>
+    </div>
+    <div class="map-box">
+      <svg id="mapSvg" viewBox="0 0 900 560"></svg>
+      <div class="map-legend">
+        <span><i style="background:#4ade80"></i>Реализовано</span>
+        <span><i style="background:#38bdf8"></i>Стройка идёт</span>
+        <span><i style="background:#d9a441"></i>На голосовании</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ХРОНИКА -->
+<section id="history" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">Хроника</div>
+      <h2>Побеждает тот, кто включился</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item"><div class="yr">2020</div><h4>Первые победы в «Комфортной городской среде»</h4><p>Смоленская область входит в число регионов-лидеров всероссийского конкурса малых городов и исторических поселений.</p></div>
+      <div class="tl-item"><div class="yr">2024</div><h4>Смоленские райцентры берут призы</h4><p>Проекты районах региона отмечают на федеральном уровне — опыт голосования жителей становится моделью для области.</p></div>
+      <div class="tl-item"><div class="yr">2025</div><h4>Сквер у «Октября», Реадовский парк, набережные</h4><p>Смоляне выбирают территории на голосовании; 35 объектов приводят в порядок за один год.</p></div>
+      <div class="tl-item"><div class="yr">2026</div><h4>Пять победителей одного конкурса</h4><p>Вязьма, Верхнеднепровский, Ярцево, Духовщина и Десногорск побеждают в XI всероссийском конкурсе лучших проектов создания комфортной городской среды. Набережная «Крепость на Днепре» проходит госэкспертизу: амфитеатр, «парящий мост», новые спуски к Днепру.</p></div>
+      <div class="tl-item"><div class="yr">2027</div><h4>Следующий голос — твой</h4><p>Отбор территорий на новый цикл — осенью 2026-го. Успей предложить свою идею, пока формат обсуждений открыт.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 СПОСОБА -->
+<section id="join" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">Как это работает</div>
+      <h2>4 способа включиться</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h3>Голосуй</h3><p>Каждый год жители выбирают, какие дворы, парки и скверы обновлять первыми. Голосование — на Госуслугах и офлайн-площадках.</p></div>
+      <div class="step"><div class="n">02</div><h3>Придумывай</h3><p>У тебя есть идея для своего двора или района? Опиши её — лучшие попадают в проектные сессии с архитекторами.</p></div>
+      <div class="step"><div class="n">03</div><h3>Следи</h3><p>Подписывайся на ход стройки: фото, сроки, подрядчики. Прозрачность — часть проекта.</p></div>
+      <div class="step"><div class="n">04</div><h3>Поддержи</h3><p>Субботники, эко-инициативы, световые и арт-проекты — «вКЛЮЧайся» в жизнь уже готового пространства.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ФИНАЛ -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="final">
+      <h2>Твой двор — <span class="k">твой проект</span></h2>
+      <p>Отпираем город для людей. Отпираем — ключом. Ключ — это ты.</p>
+      <a class="btn btn-main" href="#top">Начать с карты проектов</a>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <span>вКЛЮЧайся — концепт-визуализация портала благоустройства Смоленской области</span>
+  <span>SMOL·KEY·863</span>
+</footer>
+
+<script>
+// ---------- каталог ----------
+const statusMap = {done:['Реализовано','b-done'],proc:['Стройка идёт','b-proc'],vote:['На голосовании','b-vote']};
+const projects = [
+ {t:'Набережная «Крепость на Днепре»', c:'Смоленск', s:'proc', d:'Амфитеатр, «парящий мост», спуски к воде и новый общественный берег Днепра у крепостной стены.', p:65},
+ {t:'Сквер у «Октября»', c:'Смоленск · площадь Победы', s:'done', d:'Обновлённый сквер в центре города: выбран смолянами на голосовании, реализован по итогам.', p:100},
+ {t:'Реадовский парк', c:'Смоленск', s:'done', d:'Реконструкция главного парка юго-запада города: освещение, дорожки, зоны отдыха.', p:100},
+ {t:'Восточный участок крепостной стены', c:'Смоленск', s:'proc', d:'Реабилитация участка стены и прилегающей территории, новая пешеходная среда у памятника.', p:40},
+ {t:'Озеро «Ключевое»', c:'Смоленск', s:'done', d:'Территория у озера выбрана горожанами и благоустроена: набережная, спортзоны, освещение.', p:100},
+ {t:'Парк Гастелло', c:'Смоленск', s:'done', d:'Дорожка-аист как арт-объект и обновлённая прогулочная инфраструктура.', p:100},
+ {t:'Набережная Малой Березины', c:'Рудня', s:'done', d:'Водные террасы и прогулочный маршрут вдоль Малой Березины.', p:100},
+ {t:'«Физкульт-берег»', c:'Рославль', s:'proc', d:'Стритбол, ролледром, воркаут-зоны и спорткластер на берегу — сценарии для молодёжи.', p:55},
+ {t:'«сВязь времен»', c:'Вязьма', s:'proc', d:'Победитель конкурса 2026 года: новая связь исторического центра с общественными пространствами.', p:35},
+ {t:'Общественный центр', c:'Верхнеднепровский', s:'vote', d:'Победитель 2026 года: пространство у воды для встреч, мероприятий и отдыха всех возрастов.', p:15},
+ {t:'Центральный сквер', c:'Ярцево', s:'proc', d:'Победитель 2026 года: реконструкция центральной городской территории.', p:45},
+ {t:'Парк «Соловья души моей»', c:'Духовщина', s:'vote', d:'Победитель 2026 года: тематический парк, связанный с культурным наследием города.', p:20},
+ {t:'Набережная водохранилища', c:'Десногорск', s:'proc', d:'Победитель 2026 года: прибрежная среда для купания, спорта и «свободных» зон для подростков.', p:30},
+ {t:'Лекторий и коворкинг', c:'Гагарин', s:'done', d:'Молодёжное пространство в обновлённом общественном здании: лекции, встречи, работа.', p:100}
+];
+const grid = document.getElementById('grid');
+function render(f){
+  grid.innerHTML = projects.filter(p=>f==='all'||p.s===f).map(p=>{
+    const [lbl,cls]=statusMap[p.s];
+    return '<div class="card">'+
+      '<div class="top"><div><div class="city">'+p.c+'</div><h3>'+p.t+'</h3></div><span class="badge '+cls+'">'+lbl+'</span></div>'+
+      '<div class="desc">'+p.d+'</div>'+
+      '<div><div class="prog"><i style="width:'+p.p+'%"></i></div>'+
+      '<div class="prog-lbl"><span>Готовность</span><span>'+p.p+'%</span></div></div>'+
+    '</div>';
+  }).join('');
+}
+render('all');
+document.getElementById('filters').addEventListener('click',e=>{
+  if(!e.target.classList.contains('chip'))return;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  e.target.classList.add('on');
+  render(e.target.dataset.f);
+});
+
+// ---------- карта ----------
+const cities = [
+ {n:'Смоленск', x:340, y:270, s:'proc', d:'Набережная «Крепость на Днепре»'},
+ {n:'Вязьма', x:640, y:250, s:'proc', d:'«сВязь времен»'},
+ {n:'Ярцево', x:520, y:210, s:'proc', d:'Центральный сквер'},
+ {n:'Духовщина', x:540, y:130, s:'vote', d:'Парк «Соловья души моей»'},
+ {n:'Рудня', x:150, y:190, s:'done', d:'Набережная Малой Березины'},
+ {n:'Рославль', x:480, y:440, s:'proc', d:'«Физкульт-берег»'},
+ {n:'Гагарин', x:700, y:170, s:'done', d:'Лекторий и коворкинг'},
+ {n:'Десногорск', x:560, y:490, s:'proc', d:'Набережная водохранилища'},
+ {n:'Верхнеднепровский', x:250, y:330, s:'vote', d:'Общественный центр'}
+];
+const col={done:'#4ade80',proc:'#38bdf8',vote:'#d9a441'};
+const svg=document.getElementById('mapSvg');
+let rivers='<path d="M40 120 C200 150 260 60 340 120 C420 180 460 120 520 170 C600 230 640 200 720 260 C780 300 830 290 880 330" stroke="#1d2b3a" stroke-width="14" fill="none" stroke-linecap="round"/>'+
+'<path d="M300 540 C340 480 420 460 460 470 C520 485 540 440 600 450" stroke="#1d2b3a" stroke-width="10" fill="none" stroke-linecap="round"/>';
+let inner = rivers;
+cities.forEach(c=>{
+  inner+='<g class="pin" data-n="'+c.n+'">'+
+    '<circle class="dot" cx="'+c.x+'" cy="'+c.y+'" r="7" fill="'+col[c.s]+'" stroke="#0b0e12" stroke-width="2"/>'+
+    '<circle cx="'+c.x+'" cy="'+c.y+'" r="14" fill="none" stroke="'+col[c.s]+'" stroke-width="1" opacity=".4"/>'+
+    '<text x="'+c.x+'" y="'+(c.y+28)+'" text-anchor="middle">'+c.n+'</text>'+
+  '</g>';
+});
+svg.innerHTML = inner;
+svg.addEventListener('mouseover',e=>{
+  const g=e.target.closest('.pin'); if(!g)return;
+  const c=cities.find(x=>x.n===g.dataset.n);
+  if(!document.getElementById('tip')){
+    const t=document.createElementNS('http://www.w3.org/2000/svg','g');
+    t.setAttribute('id','tip');
+    t.innerHTML='<rect id="tipR" rx="8" width="auto" height="0" fill="#141a23" stroke="#232b36"/><text id="tipT" fill="#e8edf4" font-size="12" font-family="Manrope"></text>';
+    svg.appendChild(t);
+  }
+  const t=document.getElementById('tip'), txt=t.querySelector('#tipT'), r=t.querySelector('#tipR');
+  txt.textContent=c.d;
+  txt.setAttribute('x',c.x+14); txt.setAttribute('y',c.y-18);
+  const w=txt.getComputedTextLength?txt.getComputedTextLength():txt.textContent.length*6.4;
+  r.setAttribute('x',c.x+8); r.setAttribute('y',c.y-34); r.setAttribute('width',w+16); r.setAttribute('height',24);
+});
+svg.addEventListener('mouseout',()=>{const t=document.getElementById('tip'); if(t)t.remove();});
+
+// ---------- бегущая строка ----------
+const facts=['Смоленск — город-ключ','Ласточкин хвост — фирменный зубец стены','112 пространств на карте','22 победы в конкурсе Минстроя','Голосуй за свой двор','1,5 млрд ₽ федеральных средств','SMOL·KEY·863'];
+const one=facts.map(f=>'<span><b>'+f+'</b></span>').join('◆');
+document.getElementById('marq').innerHTML=one+one;
+</script>
+</body>
+</html>
